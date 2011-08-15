@@ -391,11 +391,9 @@ static int preinit(const char *arg)
 
 	if(!shared_buffer)
 	{
-		NSApplicationLoad();
+		//the NSApp singleton must be initialized before calling [mpGLView preinit];
 		NSApp = [NSApplication sharedApplication];
 		isLeopardOrLater = floor(NSAppKitVersionNumber) > 824;
-
-		osx_foreground_hack();
 
 		if(!mpGLView)
 		{
@@ -488,6 +486,12 @@ static int control(uint32_t request, void *data)
 	error = CVOpenGLTextureCacheCreate(NULL, 0, [glContext CGLContextObj], [[self pixelFormat] CGLPixelFormatObj], 0, &textureCache);
 	if(error != kCVReturnSuccess)
 		mp_msg(MSGT_VO, MSGL_ERR,"[vo_corevideo] Failed to create OpenGL texture Cache(%d)\n", error);
+
+	NSApp = [NSApplication sharedApplication];
+
+	//the following line is a cocoa equivalent to the osx_foreground_hack();
+	[NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
+	[NSApp activateIgnoringOtherApps: YES];
 }
 
 - (void) releaseVideoSpecific
