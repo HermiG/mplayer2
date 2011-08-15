@@ -76,6 +76,8 @@
 	//timestamps for disabling screensaver and mouse hiding
 	int lastMouseHide;
 	int lastScreensaverUpdate;
+
+	NSPoint initialLocation;
 @public
 	float winSizeMult;
 }
