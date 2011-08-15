@@ -331,7 +331,6 @@ static int query_format(uint32_t format)
 
 static void uninit(void)
 {
-    SetSystemUIMode( kUIModeNormal, 0);
     CGDisplayShowCursor(kCGDirectMainDisplay);
 
     free_file_specific();
@@ -791,7 +790,7 @@ static int control(uint32_t request, void *data)
 	{
 		if(!isRootwin)
 		{
-			SetSystemUIMode( kUIModeAllHidden, kUIOptionAutoShowMenuBar);
+			[window setLevel: NSScreenSaverWindowLevel];
 			CGDisplayHideCursor(kCGDirectMainDisplay);
 			mouseHide = YES;
 		}
@@ -812,7 +811,7 @@ static int control(uint32_t request, void *data)
 	}
 	else
 	{
-		SetSystemUIMode( kUIModeNormal, 0);
+		[window setLevel: NSNormalWindowLevel];
 
 		isFullscreen = 0;
 		CGDisplayShowCursor(kCGDirectMainDisplay);
