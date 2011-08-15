@@ -39,10 +39,15 @@
 - (void) ontop;
 @end
 
+@interface MPlayerWindow : NSWindow
+- (BOOL) canBecomeKeyWindow;
+- (BOOL) canBecomeMainWindow;
+@end
+
 @interface MPlayerOpenGLView : NSOpenGLView
 {
 	//Cocoa
-	NSWindow *window;
+	MPlayerWindow *window;
 
 	//CoreVideo
 	CVPixelBufferRef frameBuffers[2];
