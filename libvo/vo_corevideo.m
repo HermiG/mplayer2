@@ -899,16 +899,6 @@ static int control(uint32_t request, void *data)
 	if (event == nil)
 		return;
 	[NSApp sendEvent:event];
-	// Without SDL's bootstrap code (include SDL.h in mplayer.c),
-	// on Leopard, we have trouble to get the play window automatically focused
-	// when the app is actived. The Following code fix this problem.
-#ifndef CONFIG_SDL
-	if (isLeopardOrLater && [event type] == NSAppKitDefined
-			&& [event subtype] == NSApplicationActivatedEventType) {
-		[window makeMainWindow];
-		[window makeKeyAndOrderFront:mpGLView];
-	}
-#endif
 }
 
 /*
