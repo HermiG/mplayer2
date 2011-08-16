@@ -238,7 +238,7 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width, uint32_t d_
 		}
 
 		//connect to mplayerosx
-		mplayerosxProxy=[NSConnection rootProxyForConnectionWithRegisteredName:[NSString stringWithCString:buffer_name] host:nil];
+		mplayerosxProxy=[NSConnection rootProxyForConnectionWithRegisteredName:[NSString stringWithCString:buffer_name encoding:[NSString defaultCStringEncoding]] host:nil];
 		if ([mplayerosxProxy conformsToProtocol:@protocol(MPlayerOSXVOProto)]) {
 			[mplayerosxProxy setProtocolForProxy:@protocol(MPlayerOSXVOProto)];
 			mplayerosxProto = (id <MPlayerOSXVOProto>)mplayerosxProxy;
