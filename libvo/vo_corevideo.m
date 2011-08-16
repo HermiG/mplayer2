@@ -25,11 +25,6 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <CoreServices/CoreServices.h>
-//special workaround for Apple bug #6267445
-//(OSServices Power API disabled in OSServices.h for 64bit systems)
-#ifndef __POWER__
-#include <CoreServices/../Frameworks/OSServices.framework/Headers/Power.h>
-#endif
 
 //MPLAYER
 #include "config.h"
