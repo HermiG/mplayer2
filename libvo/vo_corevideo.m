@@ -385,8 +385,8 @@ static int preinit(const char *arg)
 
 	if(!shared_buffer)
 	{
-		//the NSApp singleton must be initialized before calling [mpGLView preinit];
-		NSApp = [NSApplication sharedApplication];
+		NSApplicationLoad(); //sets up the shared NSApp and prepares the event loop for cocoa objects
+		[NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
 		isLeopardOrLater = floor(NSAppKitVersionNumber) > 824;
 
 		if(!mpGLView)
@@ -481,10 +481,7 @@ static int control(uint32_t request, void *data)
 	if(error != kCVReturnSuccess)
 		mp_msg(MSGT_VO, MSGL_ERR,"[vo_corevideo] Failed to create OpenGL texture Cache(%d)\n", error);
 
-	NSApp = [NSApplication sharedApplication];
-
 	//the following line is a cocoa equivalent to the osx_foreground_hack();
-	[NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
 	[NSApp activateIgnoringOtherApps: YES];
 }
 
