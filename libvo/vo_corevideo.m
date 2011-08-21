@@ -1024,6 +1024,10 @@ static int control(uint32_t request, void *data)
 				mplayer_put_key((MOUSE_BTN0 + buttonNumber) | MP_KEY_DOWN);
 				break;
 			case NSLeftMouseUp:
+				if([theEvent clickCount] == 2) {
+			        vo_fs = !vo_fs;
+			        [self fullscreen:NO];
+				}
 				break;
 			case NSRightMouseUp:
 			case NSOtherMouseUp:
