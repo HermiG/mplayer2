@@ -945,6 +945,8 @@ static int control(uint32_t request, void *data)
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
+	if(vo_fs) return;
+
 	NSPoint currentLocation;
 	NSPoint newOrigin;
 
