@@ -137,6 +137,24 @@ static int read_buffer(unsigned char* data,int len){
   return len;
 }
 
+/**
+ * \drain data from ringbuffer (for muted S/PDIF audio)
+ */
+static int drain_buffer(int len){
+  int buffered = av_fifo_size(ao->buffer);
+  if (len > buffered) len = buffered;
+
+  // discard len bytes from ao->buffer
+  int bytesRemaining = len;
+  do {
+        int length = FFMIN(ao->buffer->end - ao->buffer->rptr, bytesRemaining);
+        av_fifo_drain(ao->buffer, length);
+        bytesRemaining -= length;
+    } while (bytesRemaining > 0);
+
+  return len;
+}
+
 static OSStatus theRenderProc(void *inRefCon,
                               AudioUnitRenderActionFlags *inActionFlags,
                               const AudioTimeStamp *inTimeStamp,
@@ -1040,8 +1058,12 @@ static OSStatus RenderCallbackSPDIF( AudioDeviceID inDevice,
 
     if (amt > req)
         amt = req;
-    if (amt)
-        read_buffer(ao->b_muted ? NULL : (unsigned char *)outOutputData->mBuffers[ao->i_stream_index].mData, amt);
+    if (amt) {
+      if(!ao->b_muted)
+        read_buffer((unsigned char *)outOutputData->mBuffers[ao->i_stream_index].mData, amt);
+      else
+        drain_buffer(amt);
+    }
 
     return noErr;
 }
